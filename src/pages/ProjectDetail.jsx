@@ -5,11 +5,18 @@ import Footer from '../components/Footer'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 
+// Map project IDs to video filenames
+const videoMap = {
+  'movie-theatre': 'Movietheater.mp4',
+  'subway-screen': 'Subwayscrean.mp4',
+}
+
 const ProjectDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const project = getProjectById(id)
   const [isScrolled, setIsScrolled] = useState(false)
+  const videoFileName = videoMap[id]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,33 +74,49 @@ const ProjectDetail = () => {
 
           {/* Video Section */}
           <div className="mb-8 sm:mb-12">
-            <div className="aspect-video bg-tan-200 dark:bg-brown-800 flex items-center justify-center rounded-lg w-full border border-tan-300 dark:border-brown-600">
-              <div className="text-center p-4 sm:p-6">
-                <svg
-                  className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-tan-500 dark:text-brown-400 mb-3 sm:mb-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {videoFileName ? (
+              <div className="aspect-video bg-tan-200 dark:bg-brown-800 rounded-lg w-full border border-tan-300 dark:border-brown-600 overflow-hidden">
+                <video
+                  className="w-full h-full object-contain"
+                  controls
+                  preload="metadata"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                  <source 
+                    src={`/videos/${videoFileName}`} 
+                    type={videoFileName.endsWith('.mov') ? 'video/quicktime' : 'video/mp4'} 
                   />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-sm sm:text-base text-tan-600 dark:text-brown-500 font-medium">Video Coming Soon</p>
-                <p className="text-xs sm:text-sm text-tan-500 dark:text-brown-600 mt-2">
-                  Replace this placeholder with your project video
-                </p>
+                  Your browser does not support the video tag.
+                </video>
               </div>
-            </div>
+            ) : (
+              <div className="aspect-video bg-tan-200 dark:bg-brown-800 flex items-center justify-center rounded-lg w-full border border-tan-300 dark:border-brown-600">
+                <div className="text-center p-4 sm:p-6">
+                  <svg
+                    className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-tan-500 dark:text-brown-400 mb-3 sm:mb-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-sm sm:text-base text-tan-600 dark:text-brown-500 font-medium">Video Coming Soon</p>
+                  <p className="text-xs sm:text-sm text-tan-500 dark:text-brown-600 mt-2">
+                    Replace this placeholder with your project video
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Project Description */}
